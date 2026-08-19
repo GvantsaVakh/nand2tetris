@@ -6,11 +6,9 @@ in tests/ (same base name, e.g. chips/Xor.hdl + tests/Xor.csv), and prints
 a per-chip pass/fail count plus a grand total.
 
 Only include chips here whose .hdl uses single-bit pins (no [n] bus syntax) --
-this parser doesn't support multi-bit buses (And16, Mux16, ALU, etc. are
-skipped; multi-bit support is explicitly a non-requirement of this project).
 
 Usage:
-    python run_all_tests.py
+    python3 run_all_tests.py
 """
 
 import os

@@ -5,8 +5,6 @@ Parses syntactically correct nand2tetris-style HDL files into an internal
 representation: a ChipDef holding the chip's declared inputs, outputs, and
 the list of PartInstance objects found in its PARTS section.
 
-This module does NOT simulate anything -- it only turns text into structured
-Python objects. Simulation lives in simulator.py.
 """
 
 import re
@@ -15,13 +13,6 @@ from dataclasses import dataclass, field
 
 @dataclass
 class PartInstance:
-    """One line inside a PARTS section, e.g. And(a=in1, b=w1, out=myOut);
-
-    chip_name:   the name of the chip being instantiated, e.g. "And"
-    connections: maps the *sub-chip's* local pin name -> the wire name used
-                 in the parent chip's scope, e.g. {"a": "in1", "b": "w1", "out": "myOut"}
-    """
-
     chip_name: str
     connections: dict[str, str] = field(default_factory=dict)
 
@@ -61,10 +52,7 @@ def _parse_connections(raw: str) -> dict[str, str]:
 
 
 def parse_chip_text(text: str) -> ChipDef:
-    """Parses the full text of an HDL file into a ChipDef.
-
-    Assumes syntactically valid, single-bit (non-bus) HDL, per the project spec.
-    """
+    """Parses the full text of an HDL file into a ChipDef."""
     text = _strip_comments(text)
 
     name_match = re.search(r"CHIP\s+(\w+)\s*\{", text)

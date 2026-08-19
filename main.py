@@ -25,8 +25,6 @@ def main() -> None:
     hdl_path = sys.argv[1]
     test_path = sys.argv[2]
 
-    # Sub-chips referenced by the target chip are assumed to live in the
-    # same directory as the .hdl file being tested.
     chips_dir = os.path.dirname(hdl_path) or "."
     loader = ChipLoader(chips_dir)
 
