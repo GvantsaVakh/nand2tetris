@@ -12,7 +12,7 @@ python3 main.py chips/Xor.hdl tests/Xor.csv
 
 This parses `Xor.hdl`, loads `Xor.csv`, runs every test case through the simulator, and prints PASS/FAIL per case plus a summary line at the end.
 
-Run everything at once (all chips that have a matching test file):
+Run everything at once (every chip listed in CHIPS_TO_TEST inside run_all_tests.py, skipping any missing its .hdl/.csv pair):
 
 ```bash
 python3 run_all_tests.py
