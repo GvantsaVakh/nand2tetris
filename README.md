@@ -34,10 +34,6 @@ One thing I ran into: some of the real Nand2Tetris chips (like `DMux`) wire a pi
 
 I also wrote `run_all_tests.py` as a convenience script so I didn't have to run `main.py` by hand for every single chip — it just loops through a list of chip names and runs each one's `.hdl`/`.csv` pair through the same pipeline, then adds up a grand total.
 
-## Notes on scope
-
-Multi-bit buses aren't supported (not required per the spec) — so chips like `And16`, `Mux16`, `ALU`, etc. that use `[16]`-style pin indexing won't parse correctly with this. I only tested against the single-bit chips from my own Project 1 submission: `And`, `Or`, `Not`, `Xor`, `Mux`, `DMux`, `HalfAdder`, `FullAdder`.
-
 ## Example files
 
 `chips/Xor.hdl` + `tests/Xor.csv` is a good small example — `Xor` is built entirely out of `And`/`Or`/`Not`, so it shows the parser and simulator working together on a non-builtin chip without much noise.
