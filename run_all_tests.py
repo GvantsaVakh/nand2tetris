@@ -22,8 +22,8 @@ from test_runner import parse_test_file, run_tests
 CHIPS_DIR = "chips"
 TESTS_DIR = "tests"
 
-# Add chip names here as you write more single-bit test vector files.
 CHIPS_TO_TEST = [
+    "Nand",
     "And",
     "Or",
     "Not",
@@ -41,22 +41,43 @@ def main() -> None:
     grand_total = 0
 
     for chip_name in CHIPS_TO_TEST:
-        hdl_path = os.path.join(CHIPS_DIR, f"{chip_name}.hdl")
         test_path = os.path.join(TESTS_DIR, f"{chip_name}.csv")
 
-        if not os.path.exists(hdl_path) or not os.path.exists(test_path):
-            print(f"== {chip_name}: SKIPPED (missing .hdl or .csv) ==\n")
+        if not os.path.exists(test_path):
+            print(f"== {chip_name}: SKIPPED (missing .csv) ==\n")
             continue
 
         print(f"== {chip_name} ==")
-        chip_def = parse_chip_file(hdl_path)
+
+        if chip_name in {"Nand", "Not", "And", "Or"}:
+            chip_def = None
+        else:
+            hdl_path = os.path.join(CHIPS_DIR, f"{chip_name}.hdl")
+
+            if not os.path.exists(hdl_path):
+                print(f"== {chip_name}: SKIPPED (missing .hdl) ==\n")
+                continue
+
+            chip_def = parse_chip_file(hdl_path)
+
         output_names, rows = parse_test_file(test_path)
-        passed, total = run_tests(chip_def, loader, output_names, rows)
+
+        passed, total = run_tests(
+            chip_def,
+            loader,
+            output_names,
+            rows,
+            chip_name=chip_name,
+        )
+
         grand_passed += passed
         grand_total += total
+
         print()
 
-    print(f"=== TOTAL: {grand_passed}/{grand_total} tests passed across {len(CHIPS_TO_TEST)} chips ===")
+    print(
+        f"=== TOTAL: {grand_passed}/{grand_total} tests passed across {len(CHIPS_TO_TEST)} chips ==="
+    )
 
 
 if __name__ == "__main__":

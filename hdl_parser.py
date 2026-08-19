@@ -21,6 +21,7 @@ class PartInstance:
     connections: maps the *sub-chip's* local pin name -> the wire name used
                  in the parent chip's scope, e.g. {"a": "in1", "b": "w1", "out": "myOut"}
     """
+
     chip_name: str
     connections: dict[str, str] = field(default_factory=dict)
 
@@ -28,6 +29,7 @@ class PartInstance:
 @dataclass
 class ChipDef:
     """Internal representation of a parsed chip."""
+
     name: str
     inputs: list[str] = field(default_factory=list)
     outputs: list[str] = field(default_factory=list)
@@ -66,7 +68,9 @@ def parse_chip_text(text: str) -> ChipDef:
     text = _strip_comments(text)
 
     name_match = re.search(r"CHIP\s+(\w+)\s*\{", text)
-    assert name_match is not None, "HDL is guaranteed valid per project spec: missing CHIP declaration"
+    assert name_match is not None, (
+        "HDL is guaranteed valid per project spec: missing CHIP declaration"
+    )
     chip_name = name_match.group(1)
 
     in_match = re.search(r"IN\s+([^;]+);", text)
@@ -83,7 +87,9 @@ def parse_chip_text(text: str) -> ChipDef:
         for part_match in re.finditer(r"(\w+)\s*\(([^)]*)\)\s*;", parts_text):
             part_chip_name = part_match.group(1)
             connections = _parse_connections(part_match.group(2))
-            parts.append(PartInstance(chip_name=part_chip_name, connections=connections))
+            parts.append(
+                PartInstance(chip_name=part_chip_name, connections=connections)
+            )
 
     return ChipDef(name=chip_name, inputs=inputs, outputs=outputs, parts=parts)
 

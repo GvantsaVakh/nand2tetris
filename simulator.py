@@ -16,16 +16,16 @@ from hdl_parser import ChipDef, parse_chip_file
 # and returns a dict mapping output pin name -> value.
 BUILTIN_SPECS: dict[str, tuple[list[str], list[str]]] = {
     "Nand": (["a", "b"], ["out"]),
-    "Not":  (["in"], ["out"]),
-    "And":  (["a", "b"], ["out"]),
-    "Or":   (["a", "b"], ["out"]),
+    "Not": (["in"], ["out"]),
+    "And": (["a", "b"], ["out"]),
+    "Or": (["a", "b"], ["out"]),
 }
 
 BUILTIN_FUNCS: dict[str, Callable[..., dict[str, int]]] = {
     "Nand": lambda a, b: {"out": 1 - (a & b)},
-    "Not":  lambda in_: {"out": 1 - in_},
-    "And":  lambda a, b: {"out": a & b},
-    "Or":   lambda a, b: {"out": a | b},
+    "Not": lambda in_: {"out": 1 - in_},
+    "And": lambda a, b: {"out": a & b},
+    "Or": lambda a, b: {"out": a | b},
 }
 
 
@@ -56,7 +56,9 @@ def _resolve(wires: dict[str, int], wire_name: str) -> int:
     return wires[wire_name]
 
 
-def simulate(chip_def: ChipDef, input_values: dict[str, int], loader: ChipLoader) -> dict[str, int]:
+def simulate(
+    chip_def: ChipDef, input_values: dict[str, int], loader: ChipLoader
+) -> dict[str, int]:
     """Simulates chip_def given a dict of input pin values, returning a dict
     of output pin values.
 
@@ -78,7 +80,9 @@ def simulate(chip_def: ChipDef, input_values: dict[str, int], loader: ChipLoader
             results = BUILTIN_FUNCS[part.chip_name](*args)
         else:
             sub_def = loader.load(part.chip_name)
-            sub_inputs = {pin: _resolve(wires, part.connections[pin]) for pin in sub_def.inputs}
+            sub_inputs = {
+                pin: _resolve(wires, part.connections[pin]) for pin in sub_def.inputs
+            }
             results = simulate(sub_def, sub_inputs, loader)
             output_pins = sub_def.outputs
 
