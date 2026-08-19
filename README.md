@@ -44,18 +44,21 @@ For something that actually shows off the recursion, `chips/FullAdder.hdl` + `te
 
 Test files are CSV-style, semicolon-separated between inputs and outputs:
 
+```
 <input pin names>; <output pin names>
 <input values>; <expected output values>
 ...
+```
 
 For example, `tests/Xor.csv`:
 
+```
 a,b; out
 0,0; 0
 0,1; 1
 1,0; 1
 1,1; 0
-
+```
 ## File structure
 
 ```
