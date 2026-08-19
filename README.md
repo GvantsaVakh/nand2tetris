@@ -40,6 +40,22 @@ I also wrote `run_all_tests.py` as a convenience script so I didn't have to run 
 
 For something that actually shows off the recursion, `chips/FullAdder.hdl` + `tests/FullAdder.csv` is better — `FullAdder` is built out of two `HalfAdder` instances plus an `Or`, and each `HalfAdder` is itself built out of `Xor`/`And`. So running that one goes: `FullAdder` → `HalfAdder` → `Xor` → `And`/`Or`/`Not`, three levels deep before hitting built-ins.
 
+## Test Vector Format
+
+Test files are CSV-style, semicolon-separated between inputs and outputs:
+
+<input pin names>; <output pin names>
+<input values>; <expected output values>
+...
+
+For example, `tests/Xor.csv`:
+
+a,b; out
+0,0; 0
+0,1; 1
+1,0; 1
+1,1; 0
+
 ## File structure
 
 ```
